@@ -18,7 +18,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot } 
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   
   let nickname = prompt("이름 입력")
@@ -36,8 +36,6 @@
   const db = getFirestore(app);
 
   const container = document.getElementById("container");
-
-  // 버튼 클릭 시 데이터 추가
   window.addText = async function() {
     const value = prompt("값 입력");
     if (!value) return;
@@ -47,9 +45,8 @@
       created: Date.now()
     });
   };
-
-  // 실시간 감지
-  onSnapshot(collection(db, "messages"), (snapshot) => {
+  const q = query(collection(db, "messages"), orderBy("created", "asc"));
+  onSnapshot(q, (snapshot) => {
     container.innerHTML = "";
     snapshot.forEach((doc) => {
       const h1 = document.createElement("h1");
