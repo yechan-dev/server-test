@@ -31,13 +31,14 @@
 
   let color = "black";
   let nickname = prompt("이름 입력");
-  let vertify = false;
+  let vertify = false;   1
   function vert(){
     if (nickname == "고예찬") {
       let pw = prompt("고예찬 인증 번호를 입력하시오.");
-      vertify = true;
       if (pw == "11538") {
+        vertify = true;
       } else {
+        vertify = false;
         nickname = "(고예찬을 입력하려고 한 사람)";
       }
     }
@@ -72,21 +73,33 @@
   window.addText = async function() {
     const value = prompt("값 입력");
     if (!value) return;
-    if(vertify == true){
-        const text = `${nickname}: ${value}`;
+    let text;
+    if(nickname == "고예찬"){
+        if(vertify == true){
+            text = `${nickname}: ${value}`;
+        }else{
+            nickname = "(고예찬을 입력하려고 한 사람)"
+            if(value == "/reset"){
+                await deleteAllMessages();
+            }else{
+                text = `${nickname}: ${value}`;
+            }
+        }
+        if (text.length >= 10) {
+          await deleteAllMessages();
+          return;
+        }
     }else{
-        nickname = "(고예찬을 입력하려고 한 사람)"
-        const text = `${nickname}: ${value}`;
+        text = `${nickname}: ${value}`;
     }
-    if (text.length >= 10) {
-      await deleteAllMessages();
-      return;
-    }
-
     await addDoc(collection(db, "messages"), {
       text,
       created: Date.now()
     });
+    const snap = await getDocs(collection(db, "messages"));
+    if (snap.size >= 10) {
+        await deleteAllMessages();
+    } 
   };
 
   const q = query(collection(db, "messages"), orderBy("created", "asc"));
