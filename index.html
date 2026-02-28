@@ -18,19 +18,32 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } 
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    onSnapshot,
+    query,
+    orderBy,
+    getDocs,
+    writeBatch
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
   let color = "black";
-  let nickname = prompt("이름 입력")
-  if(nickname == "고예찬"){
-    let pw = prompt("고예찬 인증 번호를 입력하시오.")
-    if(pw == "11538"){
-    }else{
-        nickname = "(고예찬을 입력하려고 한 사람)"
+  let nickname = prompt("이름 입력");
+  let vertify = false;
+  function vert(){
+    if (nickname == "고예찬") {
+      let pw = prompt("고예찬 인증 번호를 입력하시오.");
+      vertify = true;
+      if (pw == "11538") {
+      } else {
+        nickname = "(고예찬을 입력하려고 한 사람)";
+      }
     }
   }
   const firebaseConfig = {
-    apiKey: "AIzaSyAXvEL4l051cV4u_2Ka7xKzBiiN3PtsiNI",
+    apiKey: "AIzaSyAX...",
     authDomain: "server-bd3a8.firebaseapp.com",
     projectId: "server-bd3a8",
     storageBucket: "server-bd3a8.firebasestorage.app",
@@ -43,15 +56,38 @@
   const db = getFirestore(app);
 
   const container = document.getElementById("container");
+
+  async function deleteAllMessages() {
+    const snap = await getDocs(collection(db, "messages"));
+    const batch = writeBatch(db);
+
+    snap.forEach(doc => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+  }
+
   window.addText = async function() {
     const value = prompt("값 입력");
     if (!value) return;
+    if(vertify == true){
+        const text = `${nickname}: ${value}`;
+    }else{
+        nickname = "(고예찬을 입력하려고 한 사람)"
+        const text = `${nickname}: ${value}`;
+    }
+    if (text.length >= 10) {
+      await deleteAllMessages();
+      return;
+    }
 
     await addDoc(collection(db, "messages"), {
-      text: `${nickname}: ${value}`,
+      text,
       created: Date.now()
     });
   };
+
   const q = query(collection(db, "messages"), orderBy("created", "asc"));
   onSnapshot(q, (snapshot) => {
     container.innerHTML = "";
