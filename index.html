@@ -2,25 +2,26 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Firebase Prompt Test</title>
+  <title>Firestore Test</title>
 </head>
 <body>
 
-<button onclick="addText()">입력 버튼</button>
+<button onclick="addText()">입력하기</button>
 <div id="container"></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, onSnapshot } 
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyATSz6p3V37JML-pZfg6caWpMptFT4CLiM",
-    authDomain: "test-server-8c5f3.firebaseapp.com",
-    projectId: "test-server-8c5f3",
-    storageBucket: "test-server-8c5f3.firebasestorage.app",
-    messagingSenderId: "477239266262",
-    appId: "1:477239266262:web:7e2e5d7bd82b056acaf277",
-    measurementId: "G-25QM27PS6D"
+    apiKey: "AIzaSyAXvEL4l051cV4u_2Ka7xKzBiiN3PtsiNI",
+    authDomain: "server-bd3a8.firebaseapp.com",
+    projectId: "server-bd3a8",
+    storageBucket: "server-bd3a8.firebasestorage.app",
+    messagingSenderId: "1052247013653",
+    appId: "1:1052247013653:web:ace1a3dc642479d8c7111c",
+    measurementId: "G-CWGV8H4TWM"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -28,8 +29,9 @@
 
   const container = document.getElementById("container");
 
+  // 버튼 클릭 시 데이터 추가
   window.addText = async function() {
-    const value = prompt("값을 입력하세요");
+    const value = prompt("값 입력");
     if (!value) return;
 
     await addDoc(collection(db, "messages"), {
@@ -38,6 +40,7 @@
     });
   };
 
+  // 실시간 감지
   onSnapshot(collection(db, "messages"), (snapshot) => {
     container.innerHTML = "";
     snapshot.forEach((doc) => {
@@ -46,6 +49,7 @@
       container.appendChild(h1);
     });
   });
+
 </script>
 
 </body>
