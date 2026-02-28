@@ -10,11 +10,9 @@
 <div id="container"></div>
 
 <script type="module">
-  // 🔥 Firebase SDK import
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // 🔥 너 Firebase 콘솔에서 복사한 설정값 넣기
   const firebaseConfig = {
     apiKey: "AIzaSyATSz6p3V37JML-pZfg6caWpMptFT4CLiM",
     authDomain: "test-server-8c5f3.firebaseapp.com",
@@ -25,13 +23,11 @@
     measurementId: "G-25QM27PS6D"
   };
 
-  // Firebase 초기화
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
   const container = document.getElementById("container");
 
-  // 🔥 prompt로 값 받아서 Firestore에 저장
   window.addText = async function() {
     const value = prompt("값을 입력하세요");
     if (!value) return;
@@ -42,17 +38,15 @@
     });
   };
 
-  // 🔥 실시간으로 값 가져와서 h1 생성
   onSnapshot(collection(db, "messages"), (snapshot) => {
-    container.innerHTML = ""; // 중복 방지
-
+    container.innerHTML = "";
     snapshot.forEach((doc) => {
       const h1 = document.createElement("h1");
       h1.textContent = doc.data().text;
       container.appendChild(h1);
     });
   });
-
 </script>
+
 </body>
 </html>
