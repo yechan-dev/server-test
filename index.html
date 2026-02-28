@@ -76,18 +76,14 @@
     let text;
     if(nickname == "고예찬"){
         if(vertify == true){
-            text = `${nickname}: ${value}`;
-        }else{
-            nickname = "(고예찬을 입력하려고 한 사람)"
-            if(value == "/reset"){
+            if(value === "/reset"){
                 await deleteAllMessages();
             }else{
                 text = `${nickname}: ${value}`;
             }
-        }
-        if (text.length >= 10) {
-          await deleteAllMessages();
-          return;
+        }else{
+            nickname = "(고예찬을 입력하려고 한 사람)"
+            text = `${nickname}: ${value}`;
         }
     }else{
         text = `${nickname}: ${value}`;
