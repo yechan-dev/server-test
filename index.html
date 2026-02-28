@@ -6,14 +6,15 @@
 </head>
 <body>
 
-<button onclick="addText()">입력하기</button>
+<button onclick="addText()">입력 버튼</button>
 <div id="container"></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, onSnapshot } 
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+  
+  let nickname = prompt("이름 입력")
   const firebaseConfig = {
     apiKey: "AIzaSyAXvEL4l051cV4u_2Ka7xKzBiiN3PtsiNI",
     authDomain: "server-bd3a8.firebaseapp.com",
@@ -35,7 +36,7 @@
     if (!value) return;
 
     await addDoc(collection(db, "messages"), {
-      text: value,
+      text: `${nickname}: ${value}`,
       created: Date.now()
     });
   };
