@@ -31,9 +31,9 @@
 
   let color = "black";
   let nickname = prompt("이름 입력");
-  let vertify = false;
+  let vertify = false;   1
   function vert(){
-    if (nickname == "고예찬") {
+    if (nickname.includes("고예찬") || nickname.includes("예찬")) {
       let pw = prompt("고예찬 인증 번호를 입력하시오.");
       if (pw == "11538") {
         vertify = true;
@@ -74,14 +74,14 @@
     const value = prompt("값 입력");
     if (!value) return;
     let text;
-    if(nickname == "고예찬"){
+    if(nickname.includes("고예찬") || nickname.includes("예찬")){
         if(vertify == true){
             if(value === "/r"){
                 await deleteAllMessages();
                 return;
             }else if(value === "/p"){
                 var point = prompt("공지 입력")
-                text = `=====${point}=====`;
+                text = point;
             }else{
                 text = `${nickname}: ${value}`;
             }
@@ -93,11 +93,11 @@
         text = `${nickname}: ${value}`;
     }
     await addDoc(collection(db, "messages"), {
-      text: text,
+      text,
       created: Date.now()
     });
     const snap = await getDocs(collection(db, "messages"));
-    if (snap.size >= 10) {
+    if (snap.size >= 25) {
         await deleteAllMessages();
     } 
   };
@@ -106,7 +106,7 @@
   onSnapshot(q, (snapshot) => {
     container.innerHTML = "";
     snapshot.forEach((doc) => {
-      const h1 = document.createElement("h1");
+      const h1 = document.createElement("h3");
       h1.textContent = doc.data().text;
       container.appendChild(h1);
     });
