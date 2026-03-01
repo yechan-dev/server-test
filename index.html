@@ -90,7 +90,12 @@
             text = `${nickname}: ${value}`;
         }
     }else{
-        text = `${nickname}: ${value}`;
+      if(value === "/p"){
+          var point = prompt("공지 입력")
+          text = point;
+      }else{
+          text = `${nickname}: ${value}`;
+      }
     }
     await addDoc(collection(db, "messages"), {
       text,
