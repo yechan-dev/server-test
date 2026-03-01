@@ -113,7 +113,7 @@
         created: Date.now()
       });
     }else{
-      //nothing
+      alert("이런! 욕이 있군요. 제가 가리겠습니다.")
     }
     const snap = await getDocs(collection(db, "messages"));
     if (snap.size >= 25) {
