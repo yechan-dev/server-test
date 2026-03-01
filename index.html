@@ -31,7 +31,7 @@
 
   let color = "black";
   let nickname = prompt("이름 입력");
-  let vertify = false;   1
+  let vertify = false;
   function vert(){
     if (nickname == "고예찬") {
       let pw = prompt("고예찬 인증 번호를 입력하시오.");
@@ -45,13 +45,13 @@
   }
   vert()
   const firebaseConfig = {
-    apiKey: "AIzaSyAX...",
-    authDomain: "server-bd3a8.firebaseapp.com",
-    projectId: "server-bd3a8",
-    storageBucket: "server-bd3a8.firebasestorage.app",
-    messagingSenderId: "1052247013653",
-    appId: "1:1052247013653:web:ace1a3dc642479d8c7111c",
-    measurementId: "G-CWGV8H4TWM"
+    apiKey: "AIzaSyB5KKVwRUWZii7pM7Xtw6E06WN4eNeQvGk",
+    authDomain: "server-new-96049.firebaseapp.com",
+    projectId: "server-new-96049",
+    storageBucket: "server-new-96049.firebasestorage.app",
+    messagingSenderId: "889165885742",
+    appId: "1:889165885742:web:3a6f63479967cdcf010abf",
+    measurementId: "G-3BZ0MQJ3TH"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -78,6 +78,7 @@
         if(vertify == true){
             if(value === "/reset"){
                 await deleteAllMessages();
+                return;
             }else{
                 text = `${nickname}: ${value}`;
             }
@@ -89,7 +90,7 @@
         text = `${nickname}: ${value}`;
     }
     await addDoc(collection(db, "messages"), {
-      text,
+      text: text,
       created: Date.now()
     });
     const snap = await getDocs(collection(db, "messages"));
