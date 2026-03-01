@@ -31,7 +31,17 @@
 
   let color = "black";
   let nickname = prompt("이름 입력");
-  let vertify = false;   1
+  let vertify = false;
+  let bad_word = `시발 씨발 ㅅㅂ ㅆㅂ 존나 ㅈ나 존ㄴ ㅈㄴ 병신 ㅄ ㅂㅅ 병ㅅ ㅂ신 좆 좆까 ㅈ까 섹 ㅅㅅ 새끼 ㅅㄲ ㅅ끼 새ㄲ 지랄 ㅈㄹ ㅈ랄 지ㄹ 창녀 엠창 애미`.split(" ")
+  
+  function filter(text) {
+    for (let word of bad_word) {
+      if (text.includes(word)) {
+        return false;
+      }
+    }
+    return true;
+  }
   function vert(){
     if (nickname.includes("고예찬") || nickname.includes("예찬")) {
       let pw = prompt("고예찬 인증 번호를 입력하시오.");
@@ -97,10 +107,14 @@
           text = `${nickname}: ${value}`;
       }
     }
-    await addDoc(collection(db, "messages"), {
-      text,
-      created: Date.now()
-    });
+    if(filter(text) === true){
+      await addDoc(collection(db, "messages"), {
+        text,
+        created: Date.now()
+      });
+    }else{
+      //nothing
+    }
     const snap = await getDocs(collection(db, "messages"));
     if (snap.size >= 25) {
         await deleteAllMessages();
