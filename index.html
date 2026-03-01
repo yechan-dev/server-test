@@ -76,9 +76,12 @@
     let text;
     if(nickname == "고예찬"){
         if(vertify == true){
-            if(value === "/reset"){
+            if(value === "/r"){
                 await deleteAllMessages();
                 return;
+            }else if(value === "/p"){
+                var point = prompt("공지 입력")
+                text = `=====${point}=====`;
             }else{
                 text = `${nickname}: ${value}`;
             }
